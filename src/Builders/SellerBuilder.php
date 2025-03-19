@@ -28,24 +28,25 @@ class SellerBuilder
 {
     use HasDynamicAttributes;
 
-    /** @var array<string> */
-    protected array $allowedAttributes = [
-        'name',
-        'email',
-        'phone',
-        'address',
-        'city',
-        'state',
-        'zip',
-        'vat',
-        'kvk',
-        'country',
-    ];
+    public function __construct()
+    {
+        $this->setAllowedAttributes([
+            'name',
+            'email',
+            'phone',
+            'address',
+            'city',
+            'state',
+            'zip',
+            'vat',
+            'kvk',
+            'country',
+        ]);
 
-    /** @var array<string> */
-    protected array $requiredAttributes = [
-        'name',
-        'email',
-        'address',
-    ];
+        $this->setRequiredAttributes([
+            'name',
+            'email',
+            'address',
+        ]);
+    }
 }

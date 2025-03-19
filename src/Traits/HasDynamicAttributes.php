@@ -8,13 +8,13 @@ use InvalidArgumentException;
 trait HasDynamicAttributes
 {
     /** @var array<string, mixed> */
-    protected array $attributes = [];
+    private array $attributes = [];
 
     /** @var array<string> */
-    protected array $allowedAttributes = [];
+    private array $allowedAttributes = [];
 
     /** @var array<string> */
-    protected array $requiredAttributes = [];
+    private array $requiredAttributes = [];
 
     /**
      * @param array<int, mixed> $arguments
@@ -24,7 +24,7 @@ trait HasDynamicAttributes
         if (str_starts_with($method, 'set')) {
             $key = lcfirst(substr($method, 3));
 
-            if (! in_array($key, $this->allowedAttributes, true)) {
+            if (! in_array($key, $this->getAllowedAttributes(), true)) {
                 throw new InvalidArgumentException("Property '{$key}' is not allowed.");
             }
 
@@ -52,7 +52,7 @@ trait HasDynamicAttributes
 
     public function validate(): void
     {
-        foreach ($this->requiredAttributes as $required) {
+        foreach ($this->getRequiredAttributes() as $required) {
             if (empty($this->attributes[$required])) {
                 throw new InvalidArgumentException("Missing required field: {$required}");
             }
@@ -61,5 +61,29 @@ trait HasDynamicAttributes
         if (isset($this->attributes['email']) && ! filter_var($this->attributes['email'], FILTER_VALIDATE_EMAIL)) {
             throw new InvalidArgumentException('Invalid email format.');
         }
+    }
+
+    /** @return array<string> */
+    protected function getAllowedAttributes(): array
+    {
+        return $this->allowedAttributes;
+    }
+
+    /** @return array<string> */
+    protected function getRequiredAttributes(): array
+    {
+        return $this->requiredAttributes;
+    }
+
+    /** @param array<string> $attributes */
+    protected function setAllowedAttributes(array $attributes): void
+    {
+        $this->allowedAttributes = $attributes;
+    }
+
+    /** @param array<string> $attributes */
+    protected function setRequiredAttributes(array $attributes): void
+    {
+        $this->requiredAttributes = $attributes;
     }
 }
