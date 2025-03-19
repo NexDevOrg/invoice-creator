@@ -145,7 +145,9 @@
         <table class="header-table">
             <tr>
                 <td>
-                    <img src="{{ $logo }}" height="100">
+                    @if ($invoice->logo)
+                        <img src="{{ $invoice->logo }}" height="100">
+                    @endif
                 </td>
                 <td class="header-right">
                     <h1 class="invoice-title">Invoice</h1>
