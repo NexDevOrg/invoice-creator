@@ -1,13 +1,11 @@
 <?php
 
-namespace NexDev\InvoiceCreator\Classes;
+namespace NexDev\InvoiceCreator\Builders;
 
 use Exception;
 use NexDev\InvoiceCreator\Models\Invoice;
 use NexDev\InvoiceCreator\Traits\InvoicePDF;
-use NexDev\InvoiceCreator\Builders\BuyerBuilder;
 use NexDev\InvoiceCreator\Traits\InvoiceHelpers;
-use NexDev\InvoiceCreator\Builders\SellerBuilder;
 
 class InvoiceBuilder
 {

@@ -3,6 +3,7 @@
 namespace NexDev\InvoiceCreator\Classes;
 
 use NexDev\InvoiceCreator\Models\Invoice;
+use NexDev\InvoiceCreator\Builders\InvoiceBuilder;
 
 class OutgoingInvoice
 {
