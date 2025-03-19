@@ -180,7 +180,9 @@
                     </h1>
                 </td>
                 <td>
-                    <h1 class="company-name">NOVA Agency</h1>
+                    <h1 class="company-name">
+                        {{ $invoice->getBuyer()->getName() }}
+                    </h1>
                 </td>
             </tr>
             <tr>
@@ -248,18 +250,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Web Development</td>
-                        <td class="right">1</td>
-                        <td class="right">$1000</td>
-                        <td class="right">$1000</td>
-                    </tr>
-                    <tr>
-                        <td>Hosting</td>
-                        <td class="right">1</td>
-                        <td class="right">$200</td>
-                        <td class="right">$200</td>
-                    </tr>
+                    @foreach ($invoice->getItems() as $item)
+                        <tr>
+                            <td>{{ $item->getName() }}</td>
+                            <td class="right">{{ $item->getQuantity() }}</td>
+                            <td class="right">{{ $item->getUnitPrice() }}</td>
+                            <td class="right">{{ $item->getTotal() }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -280,15 +278,15 @@
                         <table class="totals-table">
                             <tr>
                                 <td>Subtotal:</td>
-                                <td class="right">$1200</td>
+                                <td class="right">{{ $invoice->getTotal() }}</td>
                             </tr>
                             <tr>
                                 <td>Tax (10%):</td>
-                                <td class="right">$120</td>
+                                <td class="right">{{ $invoice->getTotal() * 0.1 }}</td>
                             </tr>
                             <tr>
                                 <td class="total-row">Total:</td>
-                                <td class="right total-row">$1320</td>
+                                <td class="right total-row">{{ $invoice->getTotal() + $invoice->getTotal() * 0.1 }}</td>
                             </tr>
                         </table>
                     </td>

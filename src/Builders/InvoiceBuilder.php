@@ -20,6 +20,9 @@ class InvoiceBuilder
 
     public BuyerBuilder $buyer;
 
+    /** @var array<InvoiceItemBuilder> */
+    public array $items = [];
+
     public function __construct(string $type, ?Invoice $invoice = null)
     {
         if (! in_array($type, ['incoming', 'outgoing'])) {
@@ -74,5 +77,41 @@ class InvoiceBuilder
     public function getBuyer(): BuyerBuilder
     {
         return $this->buyer;
+    }
+
+    public function addItem(InvoiceItemBuilder $item): self
+    {
+        $this->items[] = $item;
+
+        return $this;
+    }
+
+    /**
+     * Add multiple items to the invoice.
+     *
+     * @param array<InvoiceItemBuilder> $items
+     */
+    public function addItems(array $items): self
+    {
+        foreach ($items as $item) {
+            $this->addItem($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get all items from the invoice.
+     *
+     * @return array<InvoiceItemBuilder>
+     */
+    public function getItems(): array
+    {
+        return $this->items;
+    }
+
+    public function getTotal(): float
+    {
+        return array_sum(array_map(fn (InvoiceItemBuilder $item) => $item->getTotal(), $this->items));
     }
 }
