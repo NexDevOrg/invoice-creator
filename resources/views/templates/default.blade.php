@@ -145,8 +145,8 @@
         <table class="header-table">
             <tr>
                 <td>
-                    @if ($invoice->logo)
-                        <img src="{{ $invoice->logo }}" height="100">
+                    @if ($invoice->getLogo())
+                        <img src="{{ $invoice->getLogo() }}" height="100">
                     @endif
                 </td>
                 <td class="header-right">
@@ -154,7 +154,7 @@
                     <table class="invoice-meta-table">
                         <tr>
                             <td>
-                                <p class="invoice-meta">Invoice number: #12345</p>
+                                <p class="invoice-meta">Invoice number: {{ $invoice->getId() }}</p>
                             </td>
                         </tr>
                         <tr>
@@ -175,7 +175,9 @@
         <table class="company-table">
             <tr>
                 <td>
-                    <h1 class="company-name">NexDev</h1>
+                    <h1 class="company-name">
+                        {{ $invoice->getSeller()->getName() }}
+                    </h1>
                 </td>
                 <td>
                     <h1 class="company-name">NOVA Agency</h1>
@@ -183,17 +185,54 @@
             </tr>
             <tr>
                 <td style="vertical-align: top;">
-                    <p class="company-details">Cycladenlaan 102</p>
-                    <p class="company-details">1060LZ Amsterdam</p>
-                    <p class="company-details">The Netherlands</p>
-                    <p class="company-details company-details-mt">KvK nr: 96461527</p>
-                    <p class="company-details">BTW nr: NL867621424B01</p>
-                    <p class="company-details company-details-mt">E-mail: nexdev.software@gmail.com</p>
+                    @if ($invoice->getSeller()->getAddress())
+                        <p class="company-details">{{ $invoice->getSeller()->getAddress() }}</p>
+                    @endif
+                    @if ($invoice->getSeller()->getCity())
+                        <p class="company-details">{{ $invoice->getSeller()->getZip() ?? '' }} {{ $invoice->getSeller()->getCity() }}</p>
+                    @endif
+                    @if ($invoice->getSeller()->getCountry())
+                        <p class="company-details">{{ $invoice->getSeller()->getCountry() }}</p>
+                    @endif
+
+                    @if ($invoice->getSeller()->getKvk())
+                        <p class="company-details company-details-mt">KvK nr: {{ $invoice->getSeller()->getKvk() }}</p>
+                    @endif
+                    @if ($invoice->getSeller()->getVat())
+                        <p class="company-details">BTW nr: {{ $invoice->getSeller()->getVat() }}</p>
+                    @endif
+
+                    @if ($invoice->getSeller()->getEmail())
+                        <p class="company-details company-details-mt">E-mail: {{ $invoice->getSeller()->getEmail() }}</p>
+                    @endif
+                    @if ($invoice->getSeller()->getPhone())
+                        <p class="company-details">Phone: {{ $invoice->getSeller()->getPhone() }}</p>
+                    @endif
                 </td>
                 <td style="vertical-align: top;">
-                    <p class="company-details">32 Kinburn Street</p>
-                    <p class="company-details">SE16 6DW London</p>
-                    <p class="company-details">United Kingdom</p>
+                    @if ($invoice->getBuyer()->getAddress())
+                        <p class="company-details">{{ $invoice->getBuyer()->getAddress() }}</p>
+                    @endif
+                    @if ($invoice->getBuyer()->getCity())
+                        <p class="company-details">{{ $invoice->getBuyer()->getZip() ?? '' }} {{ $invoice->getBuyer()->getCity() }}</p>
+                    @endif
+                    @if ($invoice->getBuyer()->getCountry())
+                        <p class="company-details">{{ $invoice->getBuyer()->getCountry() }}</p>
+                    @endif
+
+                    @if ($invoice->getBuyer()->getKvk())
+                        <p class="company-details company-details-mt">KvK nr: {{ $invoice->getBuyer()->getKvk() }}</p>
+                    @endif
+                    @if ($invoice->getBuyer()->getVat())
+                        <p class="company-details">BTW nr: {{ $invoice->getBuyer()->getVat() }}</p>
+                    @endif
+                    
+                    @if ($invoice->getBuyer()->getEmail())
+                        <p class="company-details company-details-mt">E-mail: {{ $invoice->getBuyer()->getEmail() }}</p>
+                    @endif
+                    @if ($invoice->getBuyer()->getPhone())
+                        <p class="company-details">Phone: {{ $invoice->getBuyer()->getPhone() }}</p>
+                    @endif
                 </td>
             </tr>
         </table>

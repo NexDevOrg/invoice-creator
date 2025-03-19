@@ -10,7 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PdfFacade;
 
 trait InvoicePDF
 {
-    public ?Pdf $pdf = null;
+    public ?PDF $pdf = null;
 
     public string $disk;
 
@@ -18,25 +18,25 @@ trait InvoicePDF
 
     private string $output;
 
-    public function getPDF(): Pdf
-    {
-        if (! $this->pdf) {
-            throw new Exception('PDF not loaded');
-        }
-
-        return $this->pdf;
-    }
-
     public function getFileName(): string
     {
-        return "{$this->type}-{$this->getSerialNumber()}.pdf";
+        return "{$this->type}-{$this->id}.pdf";
     }
 
     public function saveToStorage(): self
     {
         $this->load();
 
-        // TODO: Implement the storage saving
+        $storagePath = config("invoices.storage.{$this->type}.disk");
+        if (! is_string($storagePath)) {
+            throw new Exception('Invalid storage path configuration');
+        }
+
+        if ($this->pdf === null) {
+            throw new Exception('PDF not loaded');
+        }
+
+        $this->pdf->save($this->getFileName(), $storagePath);
 
         return $this;
     }

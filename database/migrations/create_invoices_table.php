@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::connection($connection)
             ->create(config('invoices.database.table', 'invoices'), static function (Blueprint $table): void {
                 $table->id();
+                $table->string('invoice_id')->unique();
+                $table->string('type');
+                $table->timestamps();
             });
     }
 

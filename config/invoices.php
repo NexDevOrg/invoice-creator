@@ -36,14 +36,33 @@ return [
 
     /**
      * The database connection and table name of the invoices.
+     *
+     * warning: Changing the table name will not rename the existing tables
      */
     'database' => [
         'connection' => env('INVOICE_DB_CONNECTION'),
         'table'      => 'invoices',
+
+        'tables' => [
+            'invoices' => [
+                'isActive' => true, // Whether the table is being created or not
+                'name'     => 'invoices', // The name of the table
+            ],
+            'buyers' => [
+                'isActive' => true, // Whether the table is being created or not
+                'name'     => 'buyers', // The name of the table
+            ],
+            'sellers' => [
+                'isActive' => true, // Whether the table is being created or not
+                'name'     => 'sellers', // The name of the table
+            ],
+        ],
     ],
 
     /**
      * The seller information, that can be overridden in the invoice data.
+     *
+     * warning: Changing the seller information will not update the existing invoices
      */
     'seller' => [
         'name'    => env('INVOICE_SELLER_NAME'),
