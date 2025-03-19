@@ -24,12 +24,15 @@
     },
     "require-dev": {
         "laravel/pint": "^1.21",
-        "larastan/larastan": "^3.0"
+        "larastan/larastan": "^3.0",
+        "squizlabs/php_codesniffer": "^3.12"
     },
     "scripts": {
+        "test": "composer pint-test && composer phpstan && composer phpcs",
         "pint": "pint",
         "pint-test": "pint --test",
-        "phpstan": "phpstan analyse"
+        "phpstan": "phpstan analyse",
+        "phpcs": "phpcs -s --standard=phpcs.xml src"
     },
     "extra": {
         "laravel": {
