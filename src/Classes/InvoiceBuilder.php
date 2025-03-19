@@ -24,6 +24,11 @@ class InvoiceBuilder
 
     public function getSerialNumber(): string
     {
-        return config('invoices.prefix') . config('invoices.number');
+        /** @var string $prefix */
+        $prefix = config('invoices.prefix', 'INV');
+        /** @var string $number */
+        $number = config('invoices.number', '1');
+
+        return "{$prefix} {$number}";
     }
 }

@@ -2,6 +2,7 @@
 
 namespace NexDev\InvoiceCreator\Traits;
 
+use Exception;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
@@ -9,7 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf as PdfFacade;
 
 trait InvoicePDF
 {
-    public $pdf;
+    public ?Pdf $pdf = null;
 
     public string $disk;
 
@@ -19,6 +20,10 @@ trait InvoicePDF
 
     public function getPDF(): Pdf
     {
+        if (! $this->pdf) {
+            throw new Exception('PDF not loaded');
+        }
+
         return $this->pdf;
     }
 
@@ -42,10 +47,15 @@ trait InvoicePDF
             return $this;
         }
 
-        $view     = View::make(config('invoices.view'), ['invoice' => $this]);
-        $html     = mb_convert_encoding($view, 'HTML-ENTITIES', 'UTF-8');
+        $viewPath = config('invoices.view');
+        if (! is_string($viewPath)) {
+            throw new Exception('Invalid view path configuration');
+        }
 
-        $this->pdf      = PdfFacade::loadHtml($html);
+        $view     = View::make($viewPath, ['invoice' => $this]);
+        $html     = mb_convert_encoding($view->render(), 'HTML-ENTITIES', 'UTF-8');
+
+        $this->pdf      = PdfFacade::loadHTML($html);
         $this->isLoaded = true;
         $this->output   = $this->pdf->output();
 

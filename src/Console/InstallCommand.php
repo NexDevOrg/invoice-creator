@@ -10,7 +10,7 @@ class InstallCommand extends Command
 
     protected $description = 'Install the invoice creator';
 
-    public function handle()
+    public function handle(): void
     {
         $this->info('Installing invoice creator...');
 

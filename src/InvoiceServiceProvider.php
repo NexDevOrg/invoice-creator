@@ -4,12 +4,11 @@ namespace NexDev\InvoiceCreator;
 
 use Illuminate\Support\ServiceProvider;
 use NexDev\InvoiceCreator\Console\InstallCommand;
-use NexDev\InvoiceCreator\Policies\InvoicePolicy;
 use NexDev\InvoiceCreator\Classes\OutgoingInvoice;
 
 class InvoiceServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('outgoing-invoice', fn () => new OutgoingInvoice);
 
@@ -19,7 +18,7 @@ class InvoiceServiceProvider extends ServiceProvider
         $this->setupViews();
     }
 
-    protected function setupCommands()
+    protected function setupCommands(): void
     {
         if (! $this->app->runningInConsole()) {
             return;
@@ -30,7 +29,7 @@ class InvoiceServiceProvider extends ServiceProvider
         ]);
     }
 
-    protected function setupPublishing()
+    protected function setupPublishing(): void
     {
         if (! $this->app->runningInConsole()) {
             return;
@@ -45,7 +44,7 @@ class InvoiceServiceProvider extends ServiceProvider
         ], 'invoices.config');
     }
 
-    protected function setupMigrations()
+    protected function setupMigrations(): void
     {
         if (! $this->app->runningInConsole()) {
             return;
@@ -54,7 +53,7 @@ class InvoiceServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 
-    protected function setupViews()
+    protected function setupViews(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'invoices');
     }

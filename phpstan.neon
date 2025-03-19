@@ -5,10 +5,4 @@ includes:
 parameters:
     paths:
         - src/
-    level: 5
-
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
-#
-#    excludePaths:
-#        - ./*/*/FileToBeExcluded.php
+    level: 10
