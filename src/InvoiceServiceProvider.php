@@ -14,8 +14,12 @@ class InvoiceServiceProvider extends ServiceProvider
 
         $this->setupCommands();
         $this->setupPublishing();
-        $this->setupMigrations();
         $this->setupViews();
+    }
+
+    public function boot(): void
+    {
+        $this->setupMigrations();
     }
 
     protected function setupCommands(): void

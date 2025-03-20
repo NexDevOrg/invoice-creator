@@ -34,6 +34,12 @@ return [
         ],
     ],
 
+    'models' => [
+        'invoice' => \NexDev\InvoiceCreator\Models\Invoice::class,
+        'buyer'   => \NexDev\InvoiceCreator\Models\Buyer::class,
+        'seller'  => \NexDev\InvoiceCreator\Models\Seller::class,
+    ],
+
     /**
      * The database connection and table name of the invoices.
      *
@@ -41,7 +47,6 @@ return [
      */
     'database' => [
         'connection' => env('INVOICE_DB_CONNECTION'),
-        'table'      => 'invoices',
 
         'tables' => [
             'invoices' => [

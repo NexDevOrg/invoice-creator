@@ -2,6 +2,7 @@
 
 namespace NexDev\InvoiceCreator\Builders;
 
+use NexDev\InvoiceCreator\Models\Buyer;
 use NexDev\InvoiceCreator\Traits\HasDynamicAttributes;
 
 /**
@@ -28,6 +29,11 @@ class BuyerBuilder
 {
     use HasDynamicAttributes;
 
+    /** @var Buyer */
+    public $model;
+
+    public bool $savedToDatabase = false;
+
     public function __construct()
     {
         $this->setAllowedAttributes([
@@ -48,5 +54,30 @@ class BuyerBuilder
             'email',
             'address',
         ]);
+
+        /** @var class-string<Buyer>|null $modelClass */
+        $modelClass  = config('invoices.models.buyer');
+        $this->model = ($modelClass && class_exists($modelClass))
+            ? new $modelClass
+            : new Buyer;
+    }
+
+    public function saveToDatabase(): self
+    {
+        $this->validate();
+
+        if (! $this->savedToDatabase) {
+            /** @var Buyer $model */
+            $model    = $this->model;
+            $newModel = $model->newInstance()->forceFill($this->toArray());
+            $newModel->save();
+            $this->model = $newModel;
+        } else {
+            $this->model->update($this->toArray());
+        }
+
+        $this->savedToDatabase = true;
+
+        return $this;
     }
 }

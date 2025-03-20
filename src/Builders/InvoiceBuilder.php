@@ -47,9 +47,19 @@ class InvoiceBuilder
     {
         /** @var class-string<Invoice> $modelClass */
         $modelClass = Invoice::class;
+        $array      = ['type' => $this->type];
+
+        if ($this->seller->savedToDatabase) {
+            $array['seller_id'] = $this->seller->model->id;
+        }
+
+        if ($this->buyer->savedToDatabase) {
+            $array['buyer_id'] = $this->buyer->model->id;
+        }
+
         $modelClass::updateOrCreate(
             ['invoice_id' => $this->id],
-            ['type' => $this->type]
+            $array
         );
 
         return $this;
