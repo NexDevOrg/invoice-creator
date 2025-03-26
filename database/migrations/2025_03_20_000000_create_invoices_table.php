@@ -55,15 +55,26 @@ return new class extends Migration
                     $table->id();
                     $table->string('invoice_id')->unique();
                     $table->string('type');
-                    $table->foreignId('buyer_id')->nullable()->constrained(config('invoices.database.tables.buyers.name', 'buyers'))->nullable();
-                    $table->foreignId('seller_id')->nullable()->constrained(config('invoices.database.tables.sellers.name', 'sellers'))->nullable();
-                    // $table->date('date');
-                    // $table->date('due_date');
-                    // $table->decimal('total_amount', 10, 2);
-                    // $table->decimal('tax_amount', 10, 2);
-                    // $table->decimal('total_tax_amount', 10, 2);
-                    // $table->decimal('total_am ount_with_tax', 10, 2);
-                    // $table->string('status');
+                    $table->foreignId('buyer_id')->nullable();
+                    $table->foreignId('seller_id')->nullable();
+                    $table->string('currency')->default('EUR');
+                    $table->date('date')->default(now());
+                    $table->decimal('total_amount', 10, 2)->default(0);
+                    $table->decimal('tax_amount', 10, 2)->default(0);
+                    $table->decimal('total_tax_amount', 10, 2)->default(0);
+                    $table->timestamps();
+                });
+        }
+
+        if (config('invoices.database.tables.invoice_items.isActive')) {
+            Schema::connection($connection)
+                ->create(config('invoices.database.tables.invoice_items.name', 'invoice_items'), static function (Blueprint $table): void {
+                    $table->id();
+                    $table->foreignId('invoice_id')->nullable()->constrained(config('invoices.database.tables.invoices.name', 'invoices'));
+                    $table->string('name')->nullable();
+                    $table->decimal('unit_price', 10, 2)->nullable();
+                    $table->integer('quantity')->nullable();
+                    $table->decimal('total', 10, 2)->nullable();
                     $table->timestamps();
                 });
         }

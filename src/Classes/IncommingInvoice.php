@@ -6,21 +6,21 @@ use NexDev\InvoiceCreator\Models\Invoice;
 use Illuminate\Database\Eloquent\Collection;
 use NexDev\InvoiceCreator\Builders\InvoiceBuilder;
 
-class OutgoingInvoice
+class IncommingInvoice
 {
     public static function make(): InvoiceBuilder
     {
-        return new InvoiceBuilder('outgoing');
+        return new InvoiceBuilder('incoming');
     }
 
     public static function find(string $id): InvoiceBuilder
     {
         /** @var Invoice $invoice */
         $invoice = Invoice::where('invoice_id', $id)
-            ->where('type', 'outgoing')
+            ->where('type', 'incoming')
             ->firstOrFail();
 
-        return new InvoiceBuilder('outgoing', $invoice);
+        return new InvoiceBuilder('incoming', $invoice);
     }
 
     /**
@@ -28,6 +28,8 @@ class OutgoingInvoice
      */
     public static function index(): Collection
     {
-        return Invoice::where('type', 'outgoing')->get();
+        return Invoice::where('type', 'incoming')
+            ->with('seller')
+            ->get();
     }
 }

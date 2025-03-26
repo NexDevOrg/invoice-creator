@@ -2,14 +2,15 @@
 
 namespace NexDev\InvoiceCreator\Builders;
 
+use NexDev\InvoiceCreator\Models\InvoiceItem;
 use NexDev\InvoiceCreator\Traits\HasDynamicAttributes;
 
 /**
  * @method string getName()
- * @method float getUnitPrice()
+ * @method float getUnit_price()
  * @method int getQuantity()
  * @method self setName(string $name)
- * @method self setUnitPrice(float $unitPrice)
+ * @method self setUnit_price(float $unit_price)
  * @method self setQuantity(int $quantity)
  */
 class InvoiceItemBuilder
@@ -20,13 +21,24 @@ class InvoiceItemBuilder
     {
         $this->setAllowedAttributes([
             'name',
-            'unitPrice',
+            'unit_price',
             'quantity',
+            'invoice_id',
         ]);
     }
 
     public function getTotal(): float
     {
-        return $this->getUnitPrice() * $this->getQuantity();
+        return $this->getUnit_price() * $this->getQuantity();
+    }
+
+    public function saveToDatabase(): self
+    {
+        /** @var class-string<InvoiceItem> $invoiceItemClass */
+        $invoiceItemClass = config('invoices.models.invoice_item');
+        (new $invoiceItemClass)
+            ->create($this->toArray());
+
+        return $this;
     }
 }

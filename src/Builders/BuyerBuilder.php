@@ -15,6 +15,7 @@ use NexDev\InvoiceCreator\Traits\HasDynamicAttributes;
  * @method self setZip(string $zip)
  * @method self setVat(string $vat)
  * @method self setKvk(string $kvk)
+ * @method self setCountry(string $country)
  * @method string getName()
  * @method string getEmail()
  * @method string getPhone()
@@ -24,6 +25,7 @@ use NexDev\InvoiceCreator\Traits\HasDynamicAttributes;
  * @method string getZip()
  * @method string getVat()
  * @method string getKvk()
+ * @method string getCountry()
  */
 class BuyerBuilder
 {
