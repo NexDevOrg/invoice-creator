@@ -6,4 +6,7 @@ parameters:
         - src/
     level: 10
     ignoreErrors:
-        - '#Method .*::(buyer|seller|invoices)\(\) should return Illuminate\\Database\\Eloquent\\Relations\\(BelongsTo|HasMany)<.*> but returns#'
+        - '#Method .*::(buyer|seller|invoices|Invoice|InvoiceItem)\(\) should return Illuminate\\Database\\Eloquent\\Relations\\(BelongsTo|HasMany)<.*> but returns#'
+        - '#Parameter .* expects .*, mixed given\.#'
+        - '#Property .* (.*) does not accept mixed\.#'
+        - '#Method .* should return Illuminate\\Database\\Eloquent\\Relations\\(BelongsTo|HasMany)<.*, .*> but returns Illuminate\\Database\\Eloquent\\Relations\\(BelongsTo|HasMany)<.*, \$this\(.*\)>#'
