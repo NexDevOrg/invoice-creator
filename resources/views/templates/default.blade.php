@@ -159,14 +159,14 @@
                         </tr>
                         <tr>
                             <td>
-                                <p class="invoice-meta">Date: March 18, 2025</p>
+                                <p class="invoice-meta">Date: {{ $invoice->getDate() }}</p>
                             </td>
                         </tr>
-                        <tr>
+                        {{-- <tr>
                             <td>
                                 <p class="invoice-meta">Due Date: April 18, 2025</p>
                             </td>
-                        </tr>
+                        </tr> --}}
                     </table>
                 </td>
             </tr>
@@ -201,14 +201,14 @@
                         <p class="company-details company-details-mt">KvK nr: {{ $invoice->getSeller()->getKvk() }}</p>
                     @endif
                     @if ($invoice->getSeller()->getVat())
-                        <p class="company-details">BTW nr: {{ $invoice->getSeller()->getVat() }}</p>
+                        <p class="company-details @if (! $invoice->getSeller()->getKvk()) company-details-mt @endif">BTW nr: {{ $invoice->getSeller()->getVat() }}</p>
                     @endif
 
                     @if ($invoice->getSeller()->getEmail())
                         <p class="company-details company-details-mt">E-mail: {{ $invoice->getSeller()->getEmail() }}</p>
                     @endif
                     @if ($invoice->getSeller()->getPhone())
-                        <p class="company-details">Phone: {{ $invoice->getSeller()->getPhone() }}</p>
+                        <p class="company-details @if (! $invoice->getSeller()->getEmail()) company-details-mt @endif">Phone: {{ $invoice->getSeller()->getPhone() }}</p>
                     @endif
                 </td>
                 <td style="vertical-align: top;">
@@ -226,14 +226,14 @@
                         <p class="company-details company-details-mt">KvK nr: {{ $invoice->getBuyer()->getKvk() }}</p>
                     @endif
                     @if ($invoice->getBuyer()->getVat())
-                        <p class="company-details">BTW nr: {{ $invoice->getBuyer()->getVat() }}</p>
+                        <p class="company-details @if (! $invoice->getBuyer()->getKvk()) company-details-mt @endif">BTW nr: {{ $invoice->getBuyer()->getVat() }}</p>
                     @endif
                     
                     @if ($invoice->getBuyer()->getEmail())
                         <p class="company-details company-details-mt">E-mail: {{ $invoice->getBuyer()->getEmail() }}</p>
                     @endif
                     @if ($invoice->getBuyer()->getPhone())
-                        <p class="company-details">Phone: {{ $invoice->getBuyer()->getPhone() }}</p>
+                        <p class="company-details @if (! $invoice->getBuyer()->getEmail()) company-details-mt @endif">Phone: {{ $invoice->getBuyer()->getPhone() }}</p>
                     @endif
                 </td>
             </tr>
@@ -254,8 +254,8 @@
                         <tr>
                             <td>{{ $item->getName() }}</td>
                             <td class="right">{{ $item->getQuantity() }}</td>
-                            <td class="right">{{ $item->getUnitPrice() }}</td>
-                            <td class="right">{{ $item->getTotal() }}</td>
+                            <td class="right">{{ (new NumberFormatter( 'nl_NL', NumberFormatter::CURRENCY ))->formatCurrency($item->getUnit_price(), $invoice->getCurrency()) }}</td>
+                            <td class="right">{{ (new NumberFormatter( 'nl_NL', NumberFormatter::CURRENCY ))->formatCurrency($item->getTotal(), $invoice->getCurrency()) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -268,25 +268,24 @@
                     <td style="width: 100%;">
                         <div class="payment-details">
                             <p class="payment-details-title">Payment Details</p>
-                            <p class="payment-details-text">Bank: ING Bank</p>
-                            <p class="payment-details-text">Account Name: NexDev</p>
-                            <p class="payment-details-text">IBAN: NL91ABNA0417164300</p>
-                            <p class="payment-details-text">BIC: ABNANL2A</p>
+                            @foreach ($invoice->getPaymentDetails() as $key => $value)
+                                <p class="payment-details-text">{{ $key }}: {{ $value }}</p>
+                            @endforeach
                         </div>
                     </td>
                     <td style="width: 300px;">
                         <table class="totals-table">
                             <tr>
                                 <td>Subtotal:</td>
-                                <td class="right">{{ $invoice->getTotal() }}</td>
+                                <td class="right">{{ (new NumberFormatter( 'nl_NL', NumberFormatter::CURRENCY ))->formatCurrency($invoice->getTotal(), $invoice->getCurrency()) }}</td>
                             </tr>
                             <tr>
-                                <td>Tax (10%):</td>
-                                <td class="right">{{ $invoice->getTotal() * 0.1 }}</td>
+                                <td>Tax ({{ $invoice->getVatPercentage() }}%):</td>
+                                <td class="right">{{ (new NumberFormatter( 'nl_NL', NumberFormatter::CURRENCY ))->formatCurrency($invoice->getTotal() * $invoice->getVatPercentage() / 100, $invoice->getCurrency()) }}</td>
                             </tr>
                             <tr>
                                 <td class="total-row">Total:</td>
-                                <td class="right total-row">{{ $invoice->getTotal() + $invoice->getTotal() * 0.1 }}</td>
+                                <td class="right total-row">{{ (new NumberFormatter( 'nl_NL', NumberFormatter::CURRENCY ))->formatCurrency($invoice->getTotal() + $invoice->getTotal() * $invoice->getVatPercentage() / 100, $invoice->getCurrency()) }}</td>
                             </tr>
                         </table>
                     </td>
