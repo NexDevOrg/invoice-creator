@@ -21,6 +21,11 @@ return [
     'view' => 'invoices::templates.default',
 
     /**
+     * The format of the invoice date.
+     */
+    'date_format' => env('INVOICE_DATE_FORMAT', 'Y-m-d'),
+
+    /**
      * The storage disk and path of the invoices.
      */
     'storage' => [

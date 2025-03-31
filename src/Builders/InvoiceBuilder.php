@@ -48,7 +48,8 @@ class InvoiceBuilder
         $this->id            = $invoice ? $invoice->invoice_id : $this->generateId();
         $this->vatPercentage = config('invoices.vat');
         $this->currency      = $invoice ? $invoice->currency : config('invoices.currency');
-        $this->date          = $invoice ? (new Carbon($invoice->date))->format('Y-m-d') : now()->format('Y-m-d');
+        $this->date          = $invoice ? (new Carbon($invoice->date))->format(config('invoices.date_format'))
+                : now()->format(config('invoices.date_format'));
 
         if ($invoice && $invoice->buyer) {
             $this->buyerId = $invoice->buyer->id;
