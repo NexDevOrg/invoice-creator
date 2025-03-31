@@ -18,7 +18,7 @@ trait InvoicePDF
 
     private string $output;
 
-    private string $fileName;
+    private ?string $fileName = null;
 
     public function setFileName(string $fileName): self
     {
