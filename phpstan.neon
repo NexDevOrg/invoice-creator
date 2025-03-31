@@ -10,3 +10,4 @@ parameters:
         - '#Parameter .* expects .*, mixed given\.#'
         - '#Property .* (.*) does not accept mixed\.#'
         - '#Method .* should return Illuminate\\Database\\Eloquent\\Relations\\(BelongsTo|HasMany)<.*, .*> but returns Illuminate\\Database\\Eloquent\\Relations\\(BelongsTo|HasMany)<.*, \$this\(.*\)>#'
+        - '#Property .* does not accept Illuminate\\Database\\Eloquent\\Model\.#'

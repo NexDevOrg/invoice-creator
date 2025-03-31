@@ -2,6 +2,7 @@
 
 namespace NexDev\InvoiceCreator\Models;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $buyer_id
  * @property int $seller_id
  * @property string $currency
- * @property string $date
+ * @property Carbon $date
  * @property float $total_amount
  * @property float $tax_amount
  * @property float $total_tax_amount
