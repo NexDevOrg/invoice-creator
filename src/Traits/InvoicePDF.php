@@ -18,9 +18,22 @@ trait InvoicePDF
 
     private string $output;
 
+    private string $fileName;
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
     public function getFileName(): string
     {
-        return "{$this->type}-{$this->id}.pdf";
+        if ($this->fileName === null) {
+            return "{$this->type}-{$this->id}.pdf";
+        }
+
+        return $this->fileName;
     }
 
     public function saveToStorage(): self
